@@ -1,0 +1,28 @@
+version: "3"
+services:
+  goapp:
+    build: ./docker/go
+    volumes:
+      - .:/app
+    platform: linux/amd64
+    ports:
+      - "8080:8080"
+    # extra_hosts:
+    #   - "host.docker.internal:172.17.0.1"
+    command: >
+      sh -c "go run api/main.go"
+
+  mysql:
+    image: mariadb:10.5.8
+    command: --default-authentication-plugin=mysql_native_password --init-file /data/application/init.sql
+    volumes:
+      - ./ops/db/init.sql:/data/application/init.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: local_dev_database
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: 123456
+    ports:
+      - "3306:3306"
+    container_name: clean-archi-go-mysql
+    network_mode: "bridge"
