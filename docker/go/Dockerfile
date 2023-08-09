@@ -7,14 +7,14 @@ WORKDIR /app
 COPY ../../.. .
 
 RUN go mod download && \
-    go build -o main -ldflags '-linkmode external -w -extldflags "-static"' -tags musl api/main.go
+    go build -o server -ldflags '-linkmode external -w -extldflags "-static"' -tags musl api/main.go
 
 FROM alpine
 
 RUN apk add --update bash curl
 
-COPY --from=builder /app/api main
+COPY --from=builder /app/api server
 
-EXPOSE 3000 3001
+EXPOSE 8080 8080
 
-CMD ["./main"]
+CMD ["./server"]

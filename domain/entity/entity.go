@@ -1,17 +1,19 @@
 package entity
 
-import "github.com/google/uuid"
+import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
-//ID entity ID
-type ID = uuid.UUID
+// ID entity ID
+type ID = primitive.ObjectID
 
-//NewID create a new entity ID
+// NewID create a new entity ID
 func NewID() ID {
-	return ID(uuid.New())
+	return ID(primitive.NewObjectID())
 }
 
-//StringToID convert a string to an entity ID
-func StringToID(s string) (ID, error) {
-	id, err := uuid.Parse(s)
-	return ID(id), err
+// StringToID convert a string to an entity ID
+func StringToID(s string) ID {
+	c, _ := primitive.ObjectIDFromHex(s)
+	return c
 }

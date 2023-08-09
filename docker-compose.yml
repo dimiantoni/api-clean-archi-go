@@ -1,17 +1,26 @@
 version: "3"
 services:
-  goapp:
-    build: ./docker/go
-    volumes:
-      - .:/app
-    platform: linux/amd64
+  # goapp:
+  #   build: ./docker/go
+  #   volumes:
+  #     - .:/app
+  #   platform: linux/amd64
+  #   ports:
+  #     - "8080:8080"
+  #   # extra_hosts:
+  #   #   - "host.docker.internal:172.17.0.1"
+  #   command: >
+  #     sh -c "go run api/main.go"
+  mongo:
+    image: mongo
+    environment:
+      MONGODB_INITDB_ROOT_USERNAME: root
+      MONGODB_INITDB_ROOT_PASSWORD: root
     ports:
-      - "8080:8080"
-    # extra_hosts:
-    #   - "host.docker.internal:172.17.0.1"
-    command: >
-      sh -c "go run api/main.go"
-
+      - "27017:27017"
+    volumes:
+      - ./docker/mongo:/data/db
+    container_name: clean-archi-go-mongo
   mysql:
     image: mariadb:10.5.8
     command: --default-authentication-plugin=mysql_native_password --init-file /data/application/init.sql

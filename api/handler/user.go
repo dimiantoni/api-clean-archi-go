@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/dimiantoni/api-clean-archi-go/usecase/user"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/dimiantoni/api-clean-archi-go/api/presenter"
 
@@ -20,12 +21,12 @@ func listUsers(service user.UseCase) http.Handler {
 		errorMessage := "Error reading users"
 		var data []*entity.User
 		var err error
-		name := r.URL.Query().Get("name")
+		email := r.URL.Query().Get("email")
 		switch {
-		case name == "":
+		case email == "":
 			data, err = service.ListUsers()
 		default:
-			data, err = service.SearchUsers(name)
+			data, err = service.SearchUsers(email)
 		}
 		w.Header().Set("Content-Type", "application/json")
 		if err != nil && err != entity.ErrNotFound {
@@ -60,11 +61,11 @@ func createUser(service user.UseCase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		errorMessage := "Error adding user"
 		var input struct {
-			Name     string `json:"name"`
-			Email    string `json:"email"`
-			Password string `json:"password"`
-			Address  string `json:"address"`
-			Age      int8   `json:"age"`
+			Name     string `json:"name" bson:"name",omitempty`
+			Email    string `json:"email" bson:"email",omitempty`
+			Password string `json:"password" bson:"password",omitempty`
+			Address  string `json:"address" bson:"address",omitempty`
+			Age      int8   `json:"age" bson:"age",omitempty`
 		}
 		err := json.NewDecoder(r.Body).Decode(&input)
 		if err != nil {
@@ -102,7 +103,7 @@ func getUser(service user.UseCase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		errorMessage := "Error reading user"
 		vars := mux.Vars(r)
-		id, err := entity.StringToID(vars["id"])
+		id, err := primitive.ObjectIDFromHex(vars["id"])
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(errorMessage))
@@ -139,7 +140,7 @@ func deleteUser(service user.UseCase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		errorMessage := "Error removing user"
 		vars := mux.Vars(r)
-		id, err := entity.StringToID(vars["id"])
+		id, err := primitive.ObjectIDFromHex(vars["id"])
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(errorMessage))

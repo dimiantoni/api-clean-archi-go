@@ -6,10 +6,10 @@ import (
 
 // User data
 type User struct {
-	ID       entity.ID `json:"id"`
-	Name     string    `json:"name"`
-	Email    string    `json:"email"`
-	Password string    `json:"password"`
-	Address  string    `json:"address"`
-	Age      int8      `json:"age"`
+	ID       entity.ID `json:"id" bson:"id",omitempty`
+	Name     string    `json:"name" bson:"name",omitempty`
+	Email    string    `json:"email" bson:"email",omitempty`
+	Password string    `json:"password" bson:"password",omitempty`
+	Address  string    `json:"address" bson:"address",omitempty`
+	Age      int8      `json:"age" bson:"age",omitempty`
 }

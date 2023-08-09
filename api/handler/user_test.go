@@ -47,9 +47,9 @@ func Test_listUsers_NotFound(t *testing.T) {
 	ts := httptest.NewServer(listUsers(m))
 	defer ts.Close()
 	m.EXPECT().
-		SearchUsers("dio").
+		SearchUsers("dimi@gmail.com").
 		Return(nil, entity.ErrNotFound)
-	res, err := http.Get(ts.URL + "?name=dio")
+	res, err := http.Get(ts.URL + "?email=dimi@gmail.com")
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusNotFound, res.StatusCode)
 }
@@ -62,11 +62,11 @@ func Test_listUsers_Search(t *testing.T) {
 		ID: entity.NewID(),
 	}
 	m.EXPECT().
-		SearchUsers("ozzy").
+		SearchUsers("buster@gmail.com").
 		Return([]*entity.User{u}, nil)
 	ts := httptest.NewServer(listUsers(m))
 	defer ts.Close()
-	res, err := http.Get(ts.URL + "?name=ozzy")
+	res, err := http.Get(ts.URL + "?email=buster@gmail.com")
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusOK, res.StatusCode)
 }

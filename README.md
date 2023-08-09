@@ -20,9 +20,9 @@ curl -X "POST" "http://localhost:8080/v1/user" \
      -d $'{
   "name": "Buster",
   "email": "buster@gmail.com",
-  "password": "123456"
+  "password": "123456",
   "address": "Lime Street 612",
-  "age": 18,
+  "age": 18
 }'
 
 ```
