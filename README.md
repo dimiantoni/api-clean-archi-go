@@ -1,11 +1,13 @@
 
 ## Users API with Clean Architecture Pattern using Go Lang
 
-### Runnig application
+### Clone application repo
 
 ```
 git clone https://github.com/dimiantoni/api-clean-archi-go.git
 ```
+
+### Prepare environment
 
 ```
 cd api-clean-archi-go/
@@ -13,14 +15,6 @@ cd api-clean-archi-go/
 
 ```
 make dependencies
-```
-
-```
-make build-mocks
-```
-
-```
-make test
 ```
 
 ```
@@ -35,13 +29,21 @@ docker-compose up -d
 cp .env_example .env
 ```
 
+#### Run API
+
 ```
 make run-api
 ```
 
 #### Run tests
 
-  make test
+```
+make build-mocks
+```
+
+```
+make test
+```
 
 #### API requests
 
