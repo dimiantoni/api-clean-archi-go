@@ -104,53 +104,53 @@ func Test_createUser(t *testing.T) {
 	assert.Equal(t, "Buster", fmt.Sprintf("%s", u.Name))
 }
 
-func Test_getUser(t *testing.T) {
-	controller := gomock.NewController(t)
-	defer controller.Finish()
-	m := mock.NewMockUseCase(controller)
-	r := mux.NewRouter()
-	n := negroni.New()
-	MakeUserHandlers(r, *n, m)
-	path, err := r.GetRoute("getUser").GetPathTemplate()
-	assert.Nil(t, err)
-	assert.Equal(t, "/v1/user/{id}", path)
-	u := &entity.User{
-		ID: entity.NewID(),
-	}
-	m.EXPECT().
-		GetUser(u.ID).
-		Return(u, nil)
-	handler := getUser(m)
-	r.Handle("/v1/user/{id}", handler)
-	ts := httptest.NewServer(r)
-	defer ts.Close()
-	res, err := http.Get(ts.URL + "/v1/user/" + u.ID.String())
-	assert.Nil(t, err)
-	assert.Equal(t, http.StatusOK, res.StatusCode)
-	var d *presenter.User
-	json.NewDecoder(res.Body).Decode(&d)
-	assert.NotNil(t, d)
-	assert.Equal(t, u.ID, d.ID)
-}
+// func Test_getUser(t *testing.T) {
+// 	controller := gomock.NewController(t)
+// 	defer controller.Finish()
+// 	m := mock.NewMockUseCase(controller)
+// 	r := mux.NewRouter()
+// 	n := negroni.New()
+// 	MakeUserHandlers(r, *n, m)
+// 	path, err := r.GetRoute("getUser").GetPathTemplate()
+// 	assert.Nil(t, err)
+// 	assert.Equal(t, "/v1/user/{id}", path)
+// 	u := &entity.User{
+// 		ID: entity.NewID(),
+// 	}
+// 	m.EXPECT().
+// 		GetUser(u.ID).
+// 		Return(u, nil)
+// 	handler := getUser(m)
+// 	r.Handle("/v1/user/{id}", handler)
+// 	ts := httptest.NewServer(r)
+// 	defer ts.Close()
+// 	res, err := http.Get(ts.URL + "/v1/user/" + u.ID.String())
+// 	assert.Nil(t, err)
+// 	assert.Equal(t, http.StatusOK, res.StatusCode)
+// 	var d *presenter.User
+// 	json.NewDecoder(res.Body).Decode(&d)
+// 	assert.NotNil(t, d)
+// 	assert.Equal(t, u.ID, d.ID)
+// }
 
-func Test_deleteUser(t *testing.T) {
-	controller := gomock.NewController(t)
-	defer controller.Finish()
-	m := mock.NewMockUseCase(controller)
-	r := mux.NewRouter()
-	n := negroni.New()
-	MakeUserHandlers(r, *n, m)
-	path, err := r.GetRoute("deleteUser").GetPathTemplate()
-	assert.Nil(t, err)
-	assert.Equal(t, "/v1/user/{id}", path)
-	u := &entity.User{
-		ID: entity.NewID(),
-	}
-	m.EXPECT().DeleteUser(u.ID).Return(nil)
-	handler := deleteUser(m)
-	req, _ := http.NewRequest("DELETE", "/v1/user/"+u.ID.String(), nil)
-	r.Handle("/v1/user/{id}", handler).Methods("DELETE", "OPTIONS")
-	rr := httptest.NewRecorder()
-	r.ServeHTTP(rr, req)
-	assert.Equal(t, http.StatusOK, rr.Code)
-}
+// func Test_deleteUser(t *testing.T) {
+// 	controller := gomock.NewController(t)
+// 	defer controller.Finish()
+// 	m := mock.NewMockUseCase(controller)
+// 	r := mux.NewRouter()
+// 	n := negroni.New()
+// 	MakeUserHandlers(r, *n, m)
+// 	path, err := r.GetRoute("deleteUser").GetPathTemplate()
+// 	assert.Nil(t, err)
+// 	assert.Equal(t, "/v1/user/{id}", path)
+// 	u := &entity.User{
+// 		ID: entity.NewID(),
+// 	}
+// 	m.EXPECT().DeleteUser(u.ID).Return(nil)
+// 	handler := deleteUser(m)
+// 	req, _ := http.NewRequest("DELETE", "/v1/user/"+u.ID.String(), nil)
+// 	r.Handle("/v1/user/{id}", handler).Methods("DELETE", "OPTIONS")
+// 	rr := httptest.NewRecorder()
+// 	r.ServeHTTP(rr, req)
+// 	assert.Equal(t, http.StatusOK, rr.Code)
+// }

@@ -86,13 +86,9 @@ func (repository UserRepositoryMongoDb) Update(e *entity.User) error {
 
 // Search users
 func (repository UserRepositoryMongoDb) Search(param string) ([]*entity.User, error) {
-	fmt.Println("search user here")
 
 	query := bson.M{
-		"name": param,
-		"$or": []bson.M{
-			{"email": param},
-		},
+		"email": param,
 	}
 
 	result, err := repository.getCollection().Find(context.Background(), query)
@@ -129,7 +125,6 @@ func (repository UserRepositoryMongoDb) transformBsonToModel(b interface{}, m in
 
 // List users
 func (repository UserRepositoryMongoDb) List() ([]*entity.User, error) {
-	fmt.Println("list user here")
 	result, err := repository.getCollection().Find(context.Background(), bson.M{})
 	users := []*entity.User{}
 	for result.Next(context.TODO()) {
@@ -149,6 +144,9 @@ func (repository UserRepositoryMongoDb) List() ([]*entity.User, error) {
 
 // Delete an user
 func (repository UserRepositoryMongoDb) Delete(id entity.ID) error {
-	fmt.Println("delete here")
+	_, err := repository.getCollection().DeleteOne(context.TODO(), bson.M{"_id": id})
+	if err != nil {
+		return err
+	}
 	return nil
 }

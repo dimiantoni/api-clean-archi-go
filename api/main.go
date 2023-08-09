@@ -56,6 +56,7 @@ func main() {
 
 	//user
 	handler.MakeUserHandlers(r, *n, userService)
+
 	logger := log.New(os.Stderr, "logger: ", log.Lshortfile)
 	if err != nil {
 		log.Panic(err.Error())
@@ -73,4 +74,5 @@ func main() {
 	if err != nil {
 		log.Panic(err.Error())
 	}
+
 }

@@ -81,6 +81,7 @@ func createUser(service user.UseCase) http.Handler {
 			w.Write([]byte(errorMessage))
 			return
 		}
+
 		toJ := &presenter.User{
 			ID:       id,
 			Name:     input.Name,
@@ -98,6 +99,33 @@ func createUser(service user.UseCase) http.Handler {
 		}
 	})
 }
+
+// func updateUser(service user.UseCase) http.Handler {
+// 	// return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// 	// 	errorMessage := "Error updating user"
+// 	// 	vars := mux.Vars(r)
+// 	// 	id, err := primitive.ObjectIDFromHex(vars["id"])
+// 	// 	if err != nil {
+// 	// 		w.WriteHeader(http.StatusInternalServerError)
+// 	// 		w.Write([]byte(errorMessage))
+// 	// 		return
+// 	// 	}
+// 	// 	var input struct {
+// 	// 		ID       string `json:"id" bson:"_id",omitempty`
+// 	// 		Name     string `json:"name" bson:"name",omitempty`
+// 	// 		Email    string `json:"email" bson:"email",omitempty`
+// 	// 		Password string `json:"password" bson:"password",omitempty`
+// 	// 		Address  string `json:"address" bson:"address",omitempty`
+// 	// 		Age      int8   `json:"age" bson:"age",omitempty`
+// 	// 	}
+// 	// 	id, err := service.UpdateUser(id, input.Name, input.Email, input.Password, input.Address, input.Age)
+// 	// 	err = json.NewDecoder(r.Body).Decode(&input)
+// 	// 	if err != nil {
+// 	// 		log.Println(err.Error())
+// 	// 		w.WriteHeader(http.StatusInternalServerError)
+// 	// 	}
+// 	// })
+// }
 
 func getUser(service user.UseCase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

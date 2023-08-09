@@ -1,17 +1,19 @@
 
 # Users API with Clean Architecture Pattern using Go Lang
 
-## Build
+##
+
+### Build
 
   make
 
-## Run tests
+### Run tests
 
   make test
 
-## API requests 
+### API requests
 
-### Add user
+#### Add user
 
 ```
 curl -X "POST" "http://localhost:8080/v1/user" \
@@ -26,10 +28,10 @@ curl -X "POST" "http://localhost:8080/v1/user" \
 }'
 
 ```
-### Search user
+### Search user by email
 
 ```
-curl "http://localhost:8080/v1/user?name=buster" \
+curl "http://localhost:8080/v1/user?email=buster@gmail.com" \
      -H 'Content-Type: application/json' \
      -H 'Accept: application/json'
 ```
@@ -40,4 +42,13 @@ curl "http://localhost:8080/v1/user?name=buster" \
 curl "http://localhost:8080/v1/user" \
      -H 'Content-Type: application/json' \
      -H 'Accept: application/json'
+```
+### Delete user by MongoID
+```
+curl --request DELETE \
+  --url http://localhost:8080/v1/user/64d310ac2a5593c7c9e27e44 \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json' \
+  --data '
+'
 ```

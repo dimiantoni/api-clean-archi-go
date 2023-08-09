@@ -14,6 +14,7 @@ func NewID() ID {
 
 // StringToID convert a string to an entity ID
 func StringToID(s string) ID {
+	// id, err := strconv.(s)
 	c, _ := primitive.ObjectIDFromHex(s)
 	return c
 }

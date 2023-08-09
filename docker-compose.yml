@@ -1,16 +1,5 @@
 version: "3"
 services:
-  # goapp:
-  #   build: ./docker/go
-  #   volumes:
-  #     - .:/app
-  #   platform: linux/amd64
-  #   ports:
-  #     - "8080:8080"
-  #   # extra_hosts:
-  #   #   - "host.docker.internal:172.17.0.1"
-  #   command: >
-  #     sh -c "go run api/main.go"
   mongo:
     image: mongo
     environment:

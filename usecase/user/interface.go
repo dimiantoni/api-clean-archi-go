@@ -30,6 +30,6 @@ type UseCase interface {
 	SearchUsers(query string) ([]*entity.User, error)
 	ListUsers() ([]*entity.User, error)
 	CreateUser(name, email, password, address string, age int8) (entity.ID, error)
-	UpdateUser(e *entity.User) error
+	UpdateUser(*entity.User) error
 	DeleteUser(id entity.ID) error
 }
