@@ -18,14 +18,11 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func init() {
+func main() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-}
-
-func main() {
 
 	userRepo := repository.NewUserRepository(database.NewMongodb())
 	userService := user.NewService(userRepo)
@@ -56,7 +53,7 @@ func main() {
 		ErrorLog:     logger,
 	}
 
-	err := srv.ListenAndServe()
+	err = srv.ListenAndServe()
 
 	if err != nil {
 		log.Panic(err.Error())

@@ -2,8 +2,11 @@ clean:
 	rm -rf bin/*
 
 dependencies:
-	go mod download
+	go mod tidy
 
+run-api:
+	go run api/main.go
+	
 build-mocks:
 	@go get github.com/golang/mock/gomock
 	@go install github.com/golang/mock/mockgen
