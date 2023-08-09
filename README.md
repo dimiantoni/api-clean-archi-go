@@ -1,7 +1,7 @@
 
-# Users API with Clean Architecture Pattern using Go Lang
+## Users API with Clean Architecture Pattern using Go Lang
 
-## Runnig application
+### Runnig application
 ```
 git clone https://github.com/dimiantoni/api-clean-archi-go.git
 cd api-clean-archi-go/
