@@ -13,3 +13,7 @@ type User struct {
 	Address  string    `json:"address" bson:"address",omitempty`
 	Age      int8      `json:"age" bson:"age",omitempty`
 }
+
+type AuthToken struct {
+	Token string `json:"token" bson:"token",omitempty`
+}

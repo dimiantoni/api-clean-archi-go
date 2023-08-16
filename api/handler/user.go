@@ -8,11 +8,9 @@ import (
 	"github.com/dimiantoni/api-clean-archi-go/usecase/user"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/dimiantoni/api-clean-archi-go/api/presenter"
-
-	"github.com/dimiantoni/api-clean-archi-go/domain/entity"
-
 	"github.com/codegangsta/negroni"
+	"github.com/dimiantoni/api-clean-archi-go/api/presenter"
+	"github.com/dimiantoni/api-clean-archi-go/domain/entity"
 	"github.com/gorilla/mux"
 )
 
@@ -183,8 +181,52 @@ func deleteUser(service user.UseCase) http.Handler {
 	})
 }
 
+func authUser(service user.UseCase) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		errorMessage := "Error authenticating user"
+
+		var input struct {
+			Email    string `json:"email" bson:"email",omitempty`
+			Password string `json:"password" bson:"password",omitempty`
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		err := json.NewDecoder(r.Body).Decode(&input)
+		if err != nil && err != entity.ErrNotFound {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(errorMessage))
+			return
+		}
+
+		data, err := service.Login(input.Email, input.Password)
+		if data == nil {
+			w.WriteHeader(http.StatusNotFound)
+			w.Write([]byte(errorMessage))
+			return
+		}
+		var response = &presenter.AuthToken{}
+		if data.Email == input.Email && data.ValidatePassword(input.Password) == nil {
+			token, _ := GenerateJwtToken(data.Email)
+			response.Token = token
+		} else {
+			w.WriteHeader(http.StatusNotFound)
+			w.Write([]byte(errorMessage))
+			return
+		}
+
+		if err := json.NewEncoder(w).Encode(response); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(errorMessage))
+		}
+	})
+}
+
 // MakeUserHandlers make url handlers
 func MakeUserHandlers(r *mux.Router, n negroni.Negroni, service user.UseCase) {
+	r.Handle("/v1/login", n.With(
+		negroni.Wrap(authUser(service)),
+	)).Methods("POST", "OPTIONS").Name("authUser")
+
 	r.Handle("/v1/user", n.With(
 		negroni.Wrap(listUsers(service)),
 	)).Methods("GET", "OPTIONS").Name("listUsers")

@@ -15,6 +15,7 @@ import (
 
 type UserRepository interface {
 	Create(e *entity.User) (entity.ID, error)
+	SearchUserByEmail(email string) (*entity.User, error)
 }
 
 type UserRepositoryMongoDb struct {
@@ -149,4 +150,23 @@ func (repository UserRepositoryMongoDb) Delete(id entity.ID) error {
 		return err
 	}
 	return nil
+}
+
+func (repository UserRepositoryMongoDb) SearchUserByEmail(email string) (*entity.User, error) {
+	fmt.Println("login user here")
+	query := bson.M{
+		"email": email,
+	}
+	var result entity.User
+	// result := repository.getCollection().FindOne(context.Background(), )
+	err := repository.getCollection().FindOne(context.TODO(), query).Decode(&result)
+
+	if err != nil {
+		panic(err)
+
+	} else {
+		fmt.Println("FindOne() Name:", result.Name)
+	}
+
+	return &result, nil
 }

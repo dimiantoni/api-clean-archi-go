@@ -4,7 +4,6 @@ go 1.20
 
 require (
 	github.com/codegangsta/negroni v1.0.0
-	github.com/go-sql-driver/mysql v1.7.1
 	github.com/golang/mock v1.6.0
 	github.com/gorilla/context v1.1.1
 	github.com/gorilla/mux v1.8.0
@@ -17,6 +16,8 @@ require (
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/gbrlsnchs/jwt v1.1.0 // indirect
+	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe // indirect

@@ -64,3 +64,20 @@ func (s *Service) UpdateUser(e *entity.User) error {
 	e.UpdatedAt = time.Now()
 	return s.repo.Update(e)
 }
+
+func (s *Service) Login(email, password string) (*entity.User, error) {
+	users, err := s.repo.SearchUserByEmail(email)
+
+	if err != nil {
+		return &entity.User{}, err
+	}
+
+	return &entity.User{
+		ID:       users.ID,
+		Name:     users.Name,
+		Password: users.Password,
+		Email:    users.Email,
+		Address:  users.Address,
+		Age:      users.Age,
+	}, nil
+}

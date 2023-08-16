@@ -7,6 +7,7 @@ import (
 // Reader interface
 type Reader interface {
 	Get(id entity.ID) (*entity.User, error)
+	SearchUserByEmail(email string) (*entity.User, error)
 	Search(query string) ([]*entity.User, error)
 	List() ([]*entity.User, error)
 }
@@ -32,4 +33,5 @@ type UseCase interface {
 	CreateUser(name, email, password, address string, age int8) (entity.ID, error)
 	UpdateUser(*entity.User) error
 	DeleteUser(id entity.ID) error
+	Login(email, password string) (*entity.User, error)
 }

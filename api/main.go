@@ -31,7 +31,7 @@ func main() {
 
 	//handlers
 	n := negroni.New(
-		negroni.HandlerFunc(middleware.Cors),
+		negroni.HandlerFunc(middleware.Auth),
 		negroni.NewLogger(),
 	)
 
@@ -40,7 +40,7 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 	})
 
-	//user
+	// User
 	handler.MakeUserHandlers(r, *n, userService)
 
 	logger := log.New(os.Stderr, "logger: ", log.Lshortfile)
